@@ -1,0 +1,16 @@
+projeto:
+
+abrir cmd escrever:
+
+cd C:\PROJETOS\gerenciador-clientes
+
+node server.js
+
+depois abrir o navegador em: http://localhost:3000
+
+
+-8.894077866769598, -36.49060144260984
+
+-8.888785261035752, -36.49084378022321
+
+-8.888756714842676, -36.490901893989836

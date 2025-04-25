@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Atendimento</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de Login -->
+  <div id="login-container" class="container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="text" id="usuario" placeholder="Usuário" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <!-- Área Principal -->
+  <div id="app-container" class="container" style="display: none;">
+    <header>
+      <h1>Clientes</h1>
+      <button id="btn-logout">Sair</button>
+    </header>
+
+    <!-- Filtros -->
+    <div id="filtros-clientes">
+      <label for="filtro-cidade">Cidade:</label>
+      <select id="filtro-cidade">
+        <option value="">Todas</option>
+      </select>
+
+      <label for="filtro-data-inicio">Período de:</label>
+      <input type="date" id="filtro-data-inicio">
+
+      <label for="filtro-data-fim">até</label>
+      <input type="date" id="filtro-data-fim">
+
+      <label for="filtro-pendencia">
+        <input type="checkbox" id="filtro-pendencia"> Apenas com pendência
+      </label>
+    </div>
+
+    <!-- Tabela de Clientes -->
+    <table id="tabela-clientes">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Cidade</th>
+          <th>Último Atendimento</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="lista-clientes">
+        <!-- preenchido dinamicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Atendimento -->
+  <div id="modal-atendimento" class="modal">
+    <div class="modal-content">
+      <h2 id="modal-cliente-nome"></h2>
+      <form id="form-atendimento">
+        <input type="hidden" id="cliente-id">
+        <div class="form-group">
+          <label for="data-atendimento">Data do Último Atendimento:</label>
+          <input type="text" id="data-atendimento" readonly>
+        </div>
+        <div class="form-group">
+          <label for="atendimento-realizado">Feito:</label>
+          <textarea id="atendimento-realizado" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="atendimento-pendente">Pendente:</label>
+          <textarea id="atendimento-pendente"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" id="btn-geolocalizacao">📍 Localização</button>
+          <button type="button" id="btn-atualizar-geolocalizacao">Atualizar Localização</button>
+          <button type="submit">Salvar Atendimento</button>
+          <button type="button" id="btn-fechar-modal">Fechar</button>
+        </div>
+
+        <div class="form-group">
+          <label>Histórico de Atendimentos:</label>
+          <ul id="historico-atendimento"></ul>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
