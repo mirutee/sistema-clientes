@@ -3,92 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Atendimento</title>
+  <title>Gestão de Clientes</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-  <!-- Tela de Login -->
-  <div id="login-container" class="container">
-    <h1>Login</h1>
-    <form id="login-form">
-      <input type="text" id="usuario" placeholder="Usuário" required>
-      <input type="password" id="senha" placeholder="Senha" required>
-      <button type="submit">Entrar</button>
+  <div id="login-container" class="fade-in">
+    <form id="login-form" class="login-card">
+      <h2>Login</h2>
+      <div class="form-group">
+        <label for="usuario">Usuário:</label>
+        <input type="text" id="usuario" required>
+      </div>
+      <div class="form-group">
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
   </div>
 
-  <!-- Área Principal -->
-  <div id="app-container" class="container" style="display: none;">
-    <header>
-      <h1>Clientes</h1>
-      <button id="btn-logout">Sair</button>
+  <div id="app-container" style="display: none;">
+    <header class="header">
+      <h1>Gestão de Clientes</h1>
+      <div class="header-buttons">
+        <button id="btn-config" style="display: none;" class="btn btn-config">
+          <i class="fas fa-cog"></i> Configurar Dias
+        </button>
+        <button id="btn-logout" class="btn btn-danger">
+          <i class="fas fa-sign-out-alt"></i> Sair
+        </button>
+      </div>
     </header>
 
-    <!-- Filtros -->
-    <div id="filtros-clientes">
-      <label for="filtro-cidade">Cidade:</label>
-      <select id="filtro-cidade">
-        <option value="">Todas</option>
-      </select>
-
-      <label for="filtro-data-inicio">Período de:</label>
-      <input type="date" id="filtro-data-inicio">
-
-      <label for="filtro-data-fim">até</label>
-      <input type="date" id="filtro-data-fim">
-
-      <label for="filtro-pendencia">
-        <input type="checkbox" id="filtro-pendencia"> Apenas com pendência
-      </label>
+    <div class="filtros">
+      <div class="filter-group">
+        <label for="filtro-cliente">Filtrar por Cliente:</label>
+        <input type="text" id="filtro-cliente" placeholder="Nome do cliente" class="input-filter">
+      </div>
+      <div class="filter-group">
+        <label for="filtro-cidade">Filtrar por Cidade:</label>
+        <select id="filtro-cidade" class="input-filter">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filtro-data-inicio">Data Início:</label>
+        <input type="date" id="filtro-data-inicio" class="input-filter">
+      </div>
+      <div class="filter-group">
+        <label for="filtro-data-fim">Data Fim:</label>
+        <input type="date" id="filtro-data-fim" class="input-filter">
+      </div>
+      <div class="filter-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="filtro-pendencia"> Apenas pendência
+        </label>
+      </div>
+      <div class="filter-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="filtro-debitos"> Apenas com Débito
+        </label>
+      </div>
     </div>
 
-    <!-- Tabela de Clientes -->
-    <table id="tabela-clientes">
+    <table id="lista-clientes" class="clientes-table">
       <thead>
         <tr>
-          <th>Nome</th>
+          <th>Cliente</th>
           <th>Cidade</th>
           <th>Último Atendimento</th>
           <th>Status</th>
         </tr>
       </thead>
-      <tbody id="lista-clientes">
-        <!-- preenchido dinamicamente -->
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 
-  <!-- Modal de Atendimento -->
   <div id="modal-atendimento" class="modal">
-    <div class="modal-content">
-      <h2 id="modal-cliente-nome"></h2>
+    <div class="modal-content modal-animate">
+      <span id="btn-fechar-modal" class="fechar">×</span>
+      <h2>Atendimento - <span id="modal-cliente-nome"></span></h2>
       <form id="form-atendimento">
         <input type="hidden" id="cliente-id">
         <div class="form-group">
           <label for="data-atendimento">Data do Último Atendimento:</label>
-          <input type="text" id="data-atendimento" readonly>
+          <input type="text" id="data-atendimento" readonly class="input-readonly">
         </div>
         <div class="form-group">
-          <label for="atendimento-realizado">Feito:</label>
+          <label for="atendimento-realizado">Atendimento Realizado:</label>
           <textarea id="atendimento-realizado" required></textarea>
         </div>
         <div class="form-group">
-          <label for="atendimento-pendente">Pendente:</label>
+          <label for="atendimento-pendente">Pendências:</label>
           <textarea id="atendimento-pendente"></textarea>
         </div>
-
-        <div class="modal-buttons">
-          <button type="button" id="btn-geolocalizacao">📍 Localização</button>
-          <button type="button" id="btn-atualizar-geolocalizacao">Atualizar Localização</button>
-          <button type="submit">Salvar Atendimento</button>
-          <button type="button" id="btn-fechar-modal">Fechar</button>
+        <div class="form-group">
+          <label>Financeiro - Débitos:</label>
+          <ul id="lista-debitos" class="debitos-list"></ul>
         </div>
-
+        <div class="form-group">
+          <label>Histórico de Débitos:</label>
+          <ul id="historico-debitos" class="debitos-list"></ul>
+        </div>
         <div class="form-group">
           <label>Histórico de Atendimentos:</label>
-          <ul id="historico-atendimento"></ul>
+          <ul id="historico-atendimento" class="historico-list"></ul>
+        </div>
+        <div class="modal-buttons">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="button" id="btn-geolocalizacao" title="Localização do cliente não cadastrada" class="btn btn-info">
+            <i class="fas fa-map-marker-alt"></i> Localização
+          </button>
+          <button type="button" id="btn-atualizar-geolocalizacao" class="btn btn-info">
+            <i class="fas fa-location-arrow"></i> Atualizar Localização
+          </button>
+          <button type="button" id="btn-fechar-modal-rodape" class="btn btn-secondary">Fechar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div id="modal-config" class="modal">
+    <div class="modal-content modal-animate">
+      <span id="btn-fechar-config" class="fechar">×</span>
+      <h2>Configurar Dias por Quadrado</h2>
+      <div class="form-group">
+        <label for="dias-quadrado">Dias por Quadrado:</label>
+        <input type="number" id="dias-quadrado" min="1" required class="input-number">
+      </div>
+      <div class="modal-buttons">
+        <button id="btn-salvar-config" class="btn btn-primary">Salvar</button>
+      </div>
     </div>
   </div>
 
